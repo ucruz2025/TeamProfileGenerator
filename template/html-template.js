@@ -1,6 +1,5 @@
-//May need to recrate into classes for 
-
-const manager = manager => {
+//Generates manager card
+const generateManager = manager => {
     const managerCard = 
     `<!--Employee Card-->
                     <div class="card">
@@ -19,23 +18,32 @@ const manager = manager => {
     return managerCard;
 }
 
-//Function structure should be the same as displayTeam on manager(managers)
-//This case it will be the function allManagers
+//Displays all manager cards
 const displayManagers = managers => {
     const managerCards = 
     `<!--Employee type-->
             <div class="row jumbotron justify-content-center">
                 <h2>Managers</h2>
                 <div class="col-12 d-flex justify-content-center"> 
-                    
-                    ${manager(managers)}
+                    ${allManagers(managers)}
                 </div>
             </div>
             `;
     return managerCards
 };
 
-const engineer = engineer => {
+//Gathers all manager cards and puts it under one section
+const allManagers = (managers) => {
+  const managerGroup = [];
+
+  managerGroup.push(managers
+    .filter(employee => employee.getRole() === "Manager")
+    .map(manager => generateManager(manager)).join(''));
+
+  return managerGroup.join('');
+}
+
+const generateEngineer = engineer => {
     const enginerCard = 
     `<!--Employee Card-->
                 <div class="card">
@@ -56,11 +64,11 @@ const engineer = engineer => {
 
 const displayEngineers = engineers => {
     const engineerCard = 
-    `    <!--Employee type-->
-        <div class="row jumbotron justify-content-center">
+    `<!--Employee type-->
+            <div class="row jumbotron justify-content-center">
             <h2>Engineers</h2>
             <div class="col-12 d-flex justify-content-center"> 
-                ${engineer(engineers)}
+                ${allEngineers(engineers)}
             </div>
         </div>
     
@@ -68,7 +76,17 @@ const displayEngineers = engineers => {
     return engineerCard;
 };
 
-const intern = intern => {
+const allEngineers = (engineers) => {
+    const engineerGroup = [];
+
+    engineerGroup.push(engineers
+        .filter(employee => employee.getRole() === "Engineer")
+        .map(engineer => generateEngineer(engineer)).join(''));
+
+    return engineerGroup.join('');
+}
+
+const generateIntern = intern => {
     const internCard = 
     `<!--Employee Card-->
             <div class="card">
@@ -90,30 +108,35 @@ const intern = intern => {
 const displayInterns = interns => {
     const internCard = 
     `<!--Employee type-->
-    <div class="row jumbotron justify-content-center">
-        <h2>Interns</h2>
-        <div class="col-12 d-flex justify-content-center"> 
-            ${intern(interns)}
+            <div class="row jumbotron justify-content-center">
+            <h2>Interns</h2>
+            <div class="col-12 d-flex justify-content-center"> 
+                ${allInterns(interns)}
+            </div>
         </div>
-    </div>
     
     `;
     return internCard;
 };
 
-//conver this into class?
-const allManagers = managers => {
-    const 
+const allInterns = (interns) => {
+    const internGroup = [];
+
+    internGroup.push(interns
+        .filter(employee => employee.getRole() === "Intern")
+        .map(intern => generateIntern(intern)).join(''));
+
+    return internGroup.join('');
 }
 
 const displayTeam = crew => {
     const team = [];
 
-    team.push(crew.filter(employee => employee.getRole() === "Manager").map(manager => displayManagers(manager)));
+    team.push(displayManagers(crew));
 
-    team.push(crew.filter(employee => employee.getRole() === "Engineer").map(engineer => displayEngineers(engineer)).join(''));
+    team.push(displayEngineers(crew));
 
-    team.push(crew.filter(employee => employee.getRole() === "Intern").map(intern => displayInterns(intern)).join(''));
+    team.push(displayInterns(crew));
 
     return team.join('');
 };
